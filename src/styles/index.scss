@@ -1,0 +1,27 @@
+@charset 'UTF-8';
+@import 'abstracts/_variables';
+@import 'abstracts/_animations';
+
+//base
+@import 'base/_reset';
+@import 'base/_base';
+
+// sections
+@import 'sections/_header';
+@import 'sections/_footer';
+
+// components
+@import 'components/_cursor';
+@import 'components/_basics';
+@import 'components/_navigation';
+@import 'components/_artist';
+@import 'components/_snsList';
+@import 'components/_ondoSns';
+@import 'components/_carousel';
+@import 'components/_menu';
+
+//pages
+@import 'pages/_home';
+@import 'pages/_artList';
+@import 'pages/_art';
+@import 'pages/_about';

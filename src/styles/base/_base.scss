@@ -1,0 +1,112 @@
+html {
+  font-size: 62.5%;
+  @media screen and (max-width: 1440px) {
+    font-size: 0.6944vw;
+  }
+  @include sp {
+    font-size: 2.6667vw;
+  }
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+html,
+body {
+  scroll-behavior: none;
+  overscroll-behavior: none;
+}
+body {
+  //  overflow: hidden;
+  user-select: none;
+  position: relative;
+  color: $text;
+  font-family: $sans;
+  font-weight: 400;
+  font-variation-settings: 'wght' 400;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  letter-spacing: normal;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $yellow;
+  display: none;
+  z-index: 50;
+  // transform: translateX(-100%);
+  //opacity: 0;
+}
+
+.canvasContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100 * var(--vh));
+  @include sp {
+    height: 100lvh;
+  }
+}
+.pageContainer {
+  position: relative;
+  z-index: 10;
+  // @include pc {
+  //   width: 100%;
+  //   overflow: hidden;
+  //   height: calc(100 * var(--vh));
+  // }
+}
+// .pageWrapper {
+//   @include pc {
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     width: 100%;
+//     will-change: transform;
+//   }
+// }
+
+a {
+  color: inherit;
+}
+.whiteBackground {
+  background-color: white;
+}
+
+img {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  display: block;
+}
+// utilitary classes
+.pc {
+  @include sp {
+    display: none;
+  }
+}
+.sp {
+  @include pc {
+    display: none;
+  }
+}
+picture.cover {
+  display: block;
+  position: relative;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+.pre-line {
+  white-space: pre-line;
+}
+.menuOpen {
+  overflow: hidden;
+}

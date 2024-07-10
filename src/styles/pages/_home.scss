@@ -1,0 +1,12 @@
+.page-home {
+  position: relative;
+  // background: linear-gradient(180deg, #fff 0rem, #fff 98%, $yellow 98%, $yellow 100%);
+  height: calc(100 * var(--vh));
+  overflow: hidden;
+  // z-index: 0;
+  //padding-top: 71.2rem;
+  padding-top: 60vh;
+  @include sp {
+    padding-top: 60vh;
+  }
+}

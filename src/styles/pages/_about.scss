@@ -1,0 +1,134 @@
+.page-about {
+  .basic__title {
+    margin-bottom: 7.2rem;
+    @include sp {
+      margin-bottom: 2rem;
+    }
+  }
+  .basic__fullImage {
+    margin: 7rem auto 13rem;
+    @include sp {
+      margin: 3rem auto 7rem;
+    }
+  }
+}
+.mapContainer {
+  height: 46.8rem;
+  @include sp {
+    height: 30rem;
+  }
+  iframe {
+    border: 0;
+  }
+}
+.about {
+  &__branding {
+    margin: -0.6rem 0 6.5rem;
+    p {
+      font-family: $baskerville;
+      font-size: 2.4rem;
+      @include sp {
+        font-size: 1.6rem;
+      }
+    }
+    img {
+      width: 30.2rem;
+      margin: 2rem auto 0;
+      @include sp {
+        width: 20rem;
+        margin: 1rem auto 0;
+      }
+    }
+  }
+  &__contact {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    margin: 8rem 0 8.4rem;
+    font-size: 1.8rem;
+    letter-spacing: 0.01em;
+    @include sp {
+      margin: 4rem 0 4.4rem;
+      font-size: 1.4rem;
+      text-align: center;
+    }
+    a {
+      transition: opacity 0.3s;
+      @include pc {
+        &:hover {
+          opacity: 0.6;
+        }
+      }
+    }
+    span {
+      margin-right: 0.5rem;
+      @include sp {
+        margin: 1rem 0 1rem 0;
+        width: 100%;
+      }
+    }
+    &__link {
+      @include sp {
+        margin: 0 0 3rem 0;
+        width: 100%;
+      }
+    }
+    .ondoSns__x {
+      margin-left: 2.8rem;
+      @include sp {
+        margin: 0 0 0 0;
+      }
+    }
+    .ondoSns__instagram {
+      margin-left: 6.5rem;
+      @include sp {
+        margin: 0 1.5rem 0 0;
+      }
+    }
+  }
+  &__gallery {
+    overflow: hidden;
+    height: 35.5rem;
+    position: relative;
+    @include sp {
+      height: 20rem;
+    }
+
+    &__wrapper {
+      display: flex;
+      width: fit-content;
+      position: absolute;
+      left: 0;
+      top: 0;
+      will-change: transform;
+    }
+    &__item {
+      width: 35.5rem;
+      @include sp {
+        width: 20rem;
+      }
+    }
+  }
+  &__onten {
+    padding: 11.5rem 0 0;
+    @include sp {
+      padding: 5rem 0 0;
+    }
+    &__logo {
+      width: 24.1rem;
+      margin: 0 auto 8.6rem;
+      @include sp {
+        width: 15rem;
+        margin: 4rem auto 4rem;
+      }
+    }
+    &__gallery {
+      display: flex;
+      margin: 7rem 0 17rem;
+      @include sp {
+        margin: 3rem 0 5rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+.cursor {
+  position: fixed;
+  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
+  width: 53px;
+  z-index: 100;
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 1s ease-in-out 4s;
+  filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.05));
+  @include sp {
+    display: none;
+  }
+  svg {
+    fill: $yellow;
+    fill-rule: evenodd;
+    stroke-width: 0px;
+  }
+}
+.loaded .cursor {
+  opacity: 1;
+}

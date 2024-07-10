@@ -1,0 +1,70 @@
+.basic {
+  &__page {
+    padding: 30.8rem 0 0;
+    @include sp {
+      padding: 15rem 0 0;
+    }
+  }
+  &__container {
+    max-width: 1021px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  &__title {
+    font-family: $baskerville;
+    font-size: 6.8rem;
+    @include sp {
+      font-size: 4.5rem;
+    }
+  }
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 6rem;
+    row-gap: 7.4rem;
+    @include sp {
+      row-gap: 3.5rem;
+      column-gap: 1rem;
+      div {
+        grid-column: span 2;
+      }
+    }
+    &__full {
+      grid-column: span 2;
+    }
+  }
+  &__text {
+    font-size: 1.7rem;
+    line-height: 2.1;
+    letter-spacing: 0.06em;
+    @include sp {
+      font-size: 1.3rem;
+    }
+  }
+  &__jatext {
+    font-family: $mincho;
+    font-size: 1.3rem;
+    line-height: 2.3;
+    letter-spacing: 0.05em;
+    @include sp {
+      font-size: 1.3rem;
+    }
+  }
+  &__mediumtext {
+    font-size: 1.5rem;
+    line-height: 2.15;
+    letter-spacing: 0.06em;
+    @include sp {
+      font-size: 1.3rem;
+    }
+  }
+  &__smalltext {
+    font-size: 1.3rem;
+    line-height: 1.95;
+    letter-spacing: 0.06em;
+  }
+  &__fullImage {
+    max-width: 135rem;
+    margin: auto;
+  }
+}

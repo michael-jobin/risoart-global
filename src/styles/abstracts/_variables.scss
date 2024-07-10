@@ -1,0 +1,40 @@
+@use 'sass:math';
+// colors
+$text: #000;
+$yellow: #ffde00;
+
+// fonts family
+$mincho: 'Noto Serif JP Variable', 'Noto Serif JP', sans-serif;
+$sans: 'Poppins', sans-serif;
+$baskerville: 'baskerville-poster-pt', 'Noto Serif JP Variable', 'Noto Serif JP', serif;
+
+// css variables
+:root {
+  --progress: 0;
+}
+
+// responsive breakpoints
+$xl: 1440px;
+$sp: 768px;
+$pc: 769px;
+@mixin xl {
+  @media only screen and (max-width: $xl) {
+    @content;
+  }
+}
+@mixin pc {
+  @media only screen and (min-width: $pc) {
+    @content;
+  }
+}
+@mixin sp {
+  @media only screen and (max-width: $sp) {
+    @content;
+  }
+}
+
+// vw
+@function vw($px-vw, $base-vw: $xl) {
+  $vw: math.div($px-vw * 100vw, $base-vw);
+  @return math.div(round($vw * 1000), 1000);
+}

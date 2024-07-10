@@ -1,0 +1,21 @@
+.ondoSns {
+  &__instagram {
+    img {
+      width: 3.1rem;
+    }
+  }
+  &__x {
+    img {
+      width: 3rem;
+    }
+  }
+  &__instagram,
+  &__x {
+    transition: opacity 0.3s;
+    @include pc {
+      &:hover {
+        opacity: 0.6;
+      }
+    }
+  }
+}

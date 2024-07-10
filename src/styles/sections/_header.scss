@@ -1,0 +1,89 @@
+.header {
+  position: absolute;
+  z-index: 15;
+  top: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  opacity: 0;
+  &__inner {
+    display: flex;
+    justify-content: space-between;
+    @include sp {
+      flex-direction: column;
+    }
+  }
+  &__logo {
+    width: 21.3rem;
+    margin: 2.3rem 0 0 3.2rem;
+    pointer-events: auto;
+    position: relative;
+    @include sp {
+      width: 93%;
+      margin: 1.7rem auto 0;
+      img {
+        margin: auto;
+        width: 19.2rem;
+      }
+    }
+    small {
+      font-size: 1rem;
+      color: #666666;
+      position: absolute;
+      top: 6rem;
+      left: 0;
+      line-height: 1.65;
+      letter-spacing: 0.05em;
+      display: block;
+      @include sp {
+        position: static;
+        font-size: 0.7rem;
+        line-height: 1.5;
+        margin-top: 1rem;
+      }
+    }
+  }
+  &__address {
+    width: 9.2rem;
+    margin: 1.2rem 0 0 1.4rem;
+  }
+  &__contact {
+    display: flex;
+    padding: 1.9rem 3.5rem 0 0;
+    pointer-events: auto;
+    height: fit-content;
+    &__mail {
+      font-size: 1.3rem;
+      border: 1px solid $text;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 19rem;
+      height: 4rem;
+      border-radius: 2rem;
+      letter-spacing: 0.04em;
+      transition: all 0.3s ease-in-out;
+      @include pc {
+        &:hover {
+          background-color: $yellow;
+          font-weight: 500;
+        }
+      }
+    }
+    .ondoSns {
+      &__instagram {
+        margin: 0.4rem 3rem 0 0;
+      }
+      &__x {
+        margin: 0.4rem 2.8rem 0 0;
+      }
+    }
+  }
+}
+.loaded .header {
+  animation: fadeIn 1.5s ease-out forwards 4s;
+}
+.pageWrapper .header,
+.started .header {
+  animation-delay: 0.1s;
+}

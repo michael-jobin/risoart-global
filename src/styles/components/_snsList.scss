@@ -1,0 +1,17 @@
+.snsList {
+  padding: 2.3rem 0 0 0;
+  display: flex;
+  a {
+    display: block;
+    width: 2.3rem;
+    transition: opacity 0.3s;
+    @include pc {
+      &:hover {
+        opacity: 0.6;
+      }
+    }
+    &:not(:last-child) {
+      margin-right: 0.8rem;
+    }
+  }
+}
