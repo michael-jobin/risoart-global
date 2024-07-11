@@ -26,7 +26,7 @@ PlaneProps) => {
   const scrollDelta = useRef(0)
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' })
   const tex = useTexture(
-    isMobile && art.acf.carouselImage_sp ? art.acf.carouselImage_sp : art.acf.carouselImage
+    isMobile && art.acf.carouselImageSp ? art.acf.carouselImageSp : art.acf.carouselImage
   )
 
   useGSAP(() => {
@@ -69,8 +69,8 @@ PlaneProps) => {
         {
           y: 1.3,
           duration: active ? 1 : 0.1,
-          delay: active ? 1.8 : 0,
-          ease: 'power4.out',
+          delay: active ? 1.5 : 0,
+          ease: 'power2.out',
         }
       ).to(material.uniforms.uFrequency.value, {
         y: 0,

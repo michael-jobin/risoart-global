@@ -1,7 +1,7 @@
 .page-art {
   position: relative;
   z-index: 9;
-  // opacity: 0;
+  //opacity: 0;
 }
 //head
 .artHead {
@@ -70,11 +70,12 @@
       content: '';
       position: absolute;
       background-color: white;
-      height: 200vh;
+      height: 100%;
       &.right,
       &.left {
         width: 4.2rem;
         bottom: 0;
+        z-index: 1;
         @include sp {
           width: 1.5rem;
           bottom: 0;
@@ -133,8 +134,6 @@
       }
     }
   }
-  // &__gallery {
-  // }
 }
 //profile
 .artDetails__profile {
@@ -183,5 +182,19 @@
         margin: 2rem 0 2rem;
       }
     }
+  }
+}
+
+.noCarousel {
+  .artMain {
+    height: auto;
+  }
+  .artMain__frame__mask,
+  .artHead__artist span {
+    transform: none !important;
+  }
+  .fadeIn,
+  .artHead {
+    opacity: 1 !important;
   }
 }

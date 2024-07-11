@@ -9,7 +9,8 @@ export interface ArtList {
   title: string;
   country: string;
   carouselImage: string;
-  carouselImage_sp: string;
+  carouselImageSp: string;
+  showInCarousel: boolean;
   flag: string;
   scene01?: string;
   scene02?: string;

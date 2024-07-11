@@ -50,7 +50,10 @@ const Carousel: React.FC<CarouselProps> = ({
     height: 2.48,
     gap: 0,
   })
-  const [randomArtList, setRandomArtList] = useState(artList)
+  const filteredArtlist = artList.filter((item) => item.acf && item.acf.showInCarousel === true)
+  const shuffledArtList = shuffleArray([...filteredArtlist])
+  const [randomArtList, _setRandomArtList] = useState(shuffledArtList)
+  // setRandomArtList(shuffledArtList)
   const starting = useRef(0)
 
   // -----------------------
@@ -74,8 +77,8 @@ const Carousel: React.FC<CarouselProps> = ({
         // first time in home page
         setActivePlane(null)
         setAnyPlaneActive(false)
-        const shuffledArtList = shuffleArray([...artList])
-        setRandomArtList(shuffledArtList)
+        // const shuffledArtList = shuffleArray([...filteredArtlist])
+        // setRandomArtList(shuffledArtList)
         const tl = gsap.timeline()
         if (wrapper) {
           tl.set(starting, { current: 0.0001 })

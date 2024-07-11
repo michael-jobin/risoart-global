@@ -36,7 +36,7 @@ const Art = () => {
   if (!thisArt) return <div>Art not found</div>
 
   return (
-    <div className="page-art" ref={container}>
+    <div className={`page-art ${thisArt.acf.showInCarousel ? '' : 'noCarousel'}`} ref={container}>
       <section className="artHead">
         <img src={thisArt.acf.flag} alt={thisArt.acf.country} className="artHead__flag fadeIn" />
         <p className="artHead__country fadeIn">{thisArt.acf.country}</p>
@@ -46,12 +46,20 @@ const Art = () => {
           ))}
         </h1>
       </section>
+      <div className="artMain__frame__mask left"></div>
+      <div className="artMain__frame__mask right"></div>
       <div className="artMain">
         <div className="artMain__frame">
-          <div className="artMain__frame__mask left"></div>
-          <div className="artMain__frame__mask right"></div>
           <div className="artMain__frame__mask top"></div>
         </div>
+        {!thisArt.acf.showInCarousel && (
+          <picture className="artMain__background">
+            {thisArt.acf.carouselImageSp && (
+              <source srcSet={thisArt.acf.carouselImageSp} media="(max-width: 768px)" />
+            )}
+            <img src={thisArt.acf.carouselImage} alt={thisArt.acf.name} width="1440" height="720" />
+          </picture>
+        )}
       </div>
       <div className="whiteBackground">
         <section className="artDetails">
