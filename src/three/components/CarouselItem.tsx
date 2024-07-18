@@ -63,10 +63,10 @@ const CarouselItem = ({
     e.stopPropagation()
     setBlockEvents(true)
     navigate(`art-list/${art.acf.slug}`)
+    setHover(false)
     setTimeout(() => {
-      setHover(false)
       setActivePlane(i)
-    }, 200)
+    }, 500)
   }
 
   const handlePointerEnter = (e: any) => {

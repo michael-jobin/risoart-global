@@ -18,7 +18,7 @@ const Art = () => {
   useGSAP(
     () => {
       const tl = gsap.timeline()
-      tl.to('.artMain__frame__mask.left', { x: 0, duration: 1, ease: 'expo.out', delay: 2.5 })
+      tl.to('.artMain__frame__mask.left', { x: 0, duration: 1, ease: 'expo.out', delay: 2.3 })
         .to('.artMain__frame__mask.right', { x: 0, duration: 1, ease: 'expo.out' }, '-=1')
         .to('.artMain__frame__mask.top', { y: 0, duration: 1, ease: 'expo.out' }, '-=0.5')
         .set('.artHead', { opacity: 1 }, '-=2')
@@ -64,11 +64,9 @@ const Art = () => {
       <div className="whiteBackground">
         <section className="artDetails">
           <div className="basic__container">
-            <h2 className="artDetails__title">{thisArt.acf.title}</h2>
+            <h2 className="artDetails__title">"{thisArt.acf.title}"</h2>
             <div className="artDetails__description basic__grid">
-              <div>
-                <h3 className="artDetails__description__title">Name of artwork</h3>
-              </div>
+              <div>{/* <h3 className="artDetails__description__title">Name of artwork</h3> */}</div>
               <div>
                 <h3 className="artDetails__description__title">Description</h3>
                 {thisArt.acf.description && (

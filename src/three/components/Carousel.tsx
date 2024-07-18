@@ -50,7 +50,9 @@ const Carousel: React.FC<CarouselProps> = ({
     height: 2.48,
     gap: 0,
   })
-  const filteredArtlist = artList.filter((item) => item.acf && item.acf.showInCarousel === true)
+  const filteredArtlist = artList.filter(
+    (item) => item.acf && item.acf.carouselImage && item.acf.showInCarousel === true
+  )
   const shuffledArtList = shuffleArray([...filteredArtlist])
   const [randomArtList, _setRandomArtList] = useState(shuffledArtList)
   // setRandomArtList(shuffledArtList)
@@ -94,7 +96,7 @@ const Carousel: React.FC<CarouselProps> = ({
                 x: 1.4,
                 z: 1.4,
                 duration: 3,
-                delay: 1,
+                delay: 0.1,
                 ease: 'expo.inOut',
               }
             )
@@ -248,13 +250,13 @@ const Carousel: React.FC<CarouselProps> = ({
 
       item.position.z =
         Math.sign(item.position.x) * (3 - Math.pow(1 - normalizedDistance, exponent) * 3) +
-        (isMobile ? 0.4 : 0.8)
+        (isMobile ? 0.4 : 0.9)
 
       // ajusting positions
       const zOffsetFactor = 0.5 * starting.current
       const yOffsetFactor = -0.425 * starting.current
       item.position.x -=
-        item.position.z * zOffsetFactor + 0.5 * starting.current - 0.8 * starting.current
+        item.position.z * zOffsetFactor + 0.5 * starting.current - 0.7 * starting.current
       item.position.y =
         item.position.z * yOffsetFactor +
         0.5 * starting.current +

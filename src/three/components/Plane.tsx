@@ -67,14 +67,14 @@ PlaneProps) => {
           y: 0,
         },
         {
-          y: 1.3,
+          y: 1.2,
           duration: active ? 1 : 0.1,
           delay: active ? 1.5 : 0,
           ease: 'power2.out',
         }
       ).to(material.uniforms.uFrequency.value, {
         y: 0,
-        duration: active ? 4 : 0.1,
+        duration: active ? 3.5 : 0.1,
         ease: 'power1.out',
       })
     }

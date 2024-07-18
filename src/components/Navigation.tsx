@@ -12,11 +12,8 @@ const Navigation: React.FC<NavigationProps> = ({ setIsOpen }) => {
   return (
     <nav className="navigation">
       <ul>
-        {/* <li onClick={handleClick}>
-          <Link to="/about/#introduction">Introduction</Link>
-        </li> */}
         <li onClick={handleClick}>
-          <Link to="/art-list/">Art list</Link>
+          <Link to="/artist/">Artist</Link>
         </li>
         <li onClick={handleClick}>
           <Link to="/about/">About</Link>

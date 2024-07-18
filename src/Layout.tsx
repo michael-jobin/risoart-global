@@ -34,7 +34,7 @@ const Layout = () => {
   })
 
   useEffect(() => {
-    fetch('https://risoart.onten.jp/wp/?rest_route=/wp/v2/art/')
+    fetch('https://risoart.onten.jp/wp/wp-json/acf/v3/art/')
       .then((response) => {
         if (!response.ok) throw new Error(`${response.status} Error, something went wrong`)
         return response.json()

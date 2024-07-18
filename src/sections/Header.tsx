@@ -23,7 +23,7 @@ const Header = () => {
               <br />
               Global RISOART Exhibition
               <br />
-              2024.7.12-8.31
+              2024.7.28-8.31
             </small>
           </Link>
         </h1>

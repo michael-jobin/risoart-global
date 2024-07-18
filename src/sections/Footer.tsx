@@ -7,7 +7,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer__inner">
         <div className="footer__bigLogo">
-          <span>2024.7.12-8.31</span>
+          <span>2024.7.28-8.31</span>
           <img
             src={`/global/assets/images/common/logo_02${isMobile ? '_sp' : ''}.svg`}
             alt="Global RISOART Exhibition"

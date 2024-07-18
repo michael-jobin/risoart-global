@@ -4,7 +4,7 @@ import Layout from './Layout'
 import ErrorPage from './ErrorPage'
 import Home from './pages/Home'
 import About from './pages/About'
-import ArtList from './pages/ArtList'
+import Artist from './pages/Artist'
 import Art from './pages/Art'
 const router = createBrowserRouter(
   [
@@ -22,8 +22,8 @@ const router = createBrowserRouter(
           element: <About />,
         },
         {
-          path: 'art-list',
-          element: <ArtList />,
+          path: 'artist',
+          element: <Artist />,
         },
         {
           path: 'art-list/:slug',
