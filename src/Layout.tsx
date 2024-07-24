@@ -8,21 +8,21 @@ import Cursor from './components/Cursor'
 import Header from './sections/Header'
 import gsap from 'gsap'
 import Menu from './components/Menu'
-import { lerp } from './utils'
 import type { ArtList } from './types'
 import useFetch from './hooks/useFetch'
+import useScroll from './hooks/useScroll'
 
 const Layout = () => {
   console.log('Layout')
   const location = useLocation()
-  const pageWrapperRef = useRef<HTMLDivElement>(null)
+  const overlayRef = useRef<HTMLDivElement>(null)
   const [loaded, setLoaded] = useState<boolean>(false)
   const isHomePage = location.pathname === '/'
   const overlayRef = useRef<HTMLDivElement>(null)
   // scroll
   const [maxScroll, setMaxScroll] = useState(0)
-  const scrollPositionRef = useRef(0)
-  const targetScrollPositionRef = useRef(0)
+  const [scrollPosition, setScrollPosition] = useState(0)
+  const [targetScrollPosition, setTargetScrollPosition] = useState(0)
   const [scrollBlock, _setScrollBlock] = useState(false)
 
   // -----------------------
@@ -34,6 +34,15 @@ const Layout = () => {
     error,
   } = useFetch<ArtList[]>('https://risoart.onten.jp/wp/wp-json/acf/v3/art/')
   const listLoaded = !listLoading
+
+  // -----------------------
+  // Scroll
+  // -----------------------
+  const {
+    pageWrapperRef,
+    scrollTo,
+    // refreshScroll
+  } = useScroll(isHomePage, scrollBlock)
 
   // -----------------------
   // page transition
@@ -112,21 +121,17 @@ const Layout = () => {
     const handleWheel = (event: WheelEvent) => {
       if (scrollBlock) return
       event.preventDefault()
-      targetScrollPositionRef.current = Math.max(
-        0,
-        Math.min(targetScrollPositionRef.current + event.deltaY, maxScroll)
-      )
+      setTargetScrollPosition((prev) => Math.max(0, Math.min(prev + event.deltaY, maxScroll)))
     }
 
     const animateScroll = () => {
-      scrollPositionRef.current = lerp(
-        scrollPositionRef.current,
-        targetScrollPositionRef.current,
-        0.1
-      )
-      if (pageWrapperRef.current) {
-        pageWrapperRef.current.style.transform = `translate3d(0, ${-scrollPositionRef.current}px, 0)`
-      }
+      setScrollPosition((prev) => {
+        const newScrollPosition = lerp(prev, targetScrollPosition, 0.1)
+        if (pageWrapperRef.current) {
+          pageWrapperRef.current.style.transform = `translate3d(0, ${-newScrollPosition}px, 0)`
+        }
+        return newScrollPosition
+      })
       requestId = requestAnimationFrame(animateScroll)
     }
 
@@ -137,7 +142,13 @@ const Layout = () => {
       window.removeEventListener('wheel', handleWheel)
       cancelAnimationFrame(requestId)
     }
-  }, [maxScroll, isHomePage])
+  }, [maxScroll, isHomePage, targetScrollPosition])
+
+  useEffect(() => {
+    if (pageWrapperRef.current) {
+      pageWrapperRef.current.style.transform = `translate3d(0, ${-scrollPosition}px, 0)`
+    }
+  }, [scrollPosition])
 
   const scrollTo = (target: number | string, options: { immediate?: boolean } = {}) => {
     const { immediate = false } = options
@@ -161,13 +172,10 @@ const Layout = () => {
       }, 200)
     } else {
       if (immediate) {
-        scrollPositionRef.current = targetPosition
-        targetScrollPositionRef.current = targetPosition
-        if (pageWrapperRef.current) {
-          pageWrapperRef.current.style.transform = `translate3d(0, ${-targetPosition}px, 0)`
-        }
+        setScrollPosition(targetPosition)
+        setTargetScrollPosition(targetPosition)
       } else {
-        targetScrollPositionRef.current = targetPosition
+        setTargetScrollPosition(targetPosition)
       }
     }
   }
