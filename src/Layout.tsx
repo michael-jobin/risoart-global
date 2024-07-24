@@ -8,26 +8,23 @@ import Cursor from './components/Cursor'
 import Header from './sections/Header'
 import gsap from 'gsap'
 import Menu from './components/Menu'
-import { lerp } from './utils'
 import type { ArtList } from './types'
 import useFetch from './hooks/useFetch'
+import useScroll from './hooks/useScroll'
 
 const Layout = () => {
   console.log('Layout')
   const location = useLocation()
-  const pageWrapperRef = useRef<HTMLDivElement>(null)
   const [loaded, setLoaded] = useState<boolean>(false)
   const isHomePage = location.pathname === '/'
   const overlayRef = useRef<HTMLDivElement>(null)
-  // scroll
-  const [maxScroll, setMaxScroll] = useState(0)
-  const scrollPositionRef = useRef(0)
-  const targetScrollPositionRef = useRef(0)
-  const [scrollBlock, _setScrollBlock] = useState(false)
 
-  // -----------------------
-  // fetch list
-  // -----------------------
+  const { pageWrapperRef, refreshScroll, scrollTo, setScrollBlock } = useScroll(
+    isHomePage,
+    isTablet,
+    isMobile
+  )
+
   const {
     data: artList,
     loading: listLoading,
@@ -35,11 +32,7 @@ const Layout = () => {
   } = useFetch<ArtList[]>('https://risoart.onten.jp/wp/wp-json/acf/v3/art/')
   const listLoaded = !listLoading
 
-  // -----------------------
-  // page transition
-  // -----------------------
   const blocker = useBlocker(({ currentLocation, nextLocation }) => {
-    // page transition for every case, except from the home to the artist page
     const regex = /\/art-list\/([^\/]+)\/?$/
     const toArtistPage = nextLocation.pathname.match(regex)
     if (currentLocation.pathname === '/' && toArtistPage) return false
@@ -72,105 +65,11 @@ const Layout = () => {
           if (blocker.location.hash) scrollTo(blocker.location.hash, { immediate: true })
         }, '-=0.6')
     }
-  }, [blocker.state])
-
-  // -----------------------
-  // scroll
-  // -----------------------
-  const refreshScroll = () => {
-    if (pageWrapperRef.current) {
-      const pageContainerHeight = window.innerHeight
-      const pageWrapperHeight = pageWrapperRef.current.scrollHeight
-      setMaxScroll(pageWrapperHeight - pageContainerHeight)
-    }
-  }
+  }, [blocker.state, scrollTo])
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [location])
-
-  useEffect(() => {
-    if (!pageWrapperRef.current) return
-
-    const resizeObserver = new ResizeObserver(() => {
-      refreshScroll()
-    })
-
-    resizeObserver.observe(pageWrapperRef.current)
-
-    return () => {
-      if (pageWrapperRef.current) {
-        resizeObserver.unobserve(pageWrapperRef.current)
-      }
-    }
-  }, [])
-
-  useEffect(() => {
-    if (isHomePage || isTablet || isMobile) return
-    let requestId: number
-
-    const handleWheel = (event: WheelEvent) => {
-      if (scrollBlock) return
-      event.preventDefault()
-      targetScrollPositionRef.current = Math.max(
-        0,
-        Math.min(targetScrollPositionRef.current + event.deltaY, maxScroll)
-      )
-    }
-
-    const animateScroll = () => {
-      scrollPositionRef.current = lerp(
-        scrollPositionRef.current,
-        targetScrollPositionRef.current,
-        0.1
-      )
-      if (pageWrapperRef.current) {
-        pageWrapperRef.current.style.transform = `translate3d(0, ${-scrollPositionRef.current}px, 0)`
-      }
-      requestId = requestAnimationFrame(animateScroll)
-    }
-
-    window.addEventListener('wheel', handleWheel, { passive: false })
-    animateScroll()
-
-    return () => {
-      window.removeEventListener('wheel', handleWheel)
-      cancelAnimationFrame(requestId)
-    }
-  }, [maxScroll, isHomePage])
-
-  const scrollTo = (target: number | string, options: { immediate?: boolean } = {}) => {
-    const { immediate = false } = options
-
-    let targetPosition = 0
-    if (typeof target === 'number') {
-      targetPosition = target
-    } else if (typeof target === 'string') {
-      const element = document.querySelector(target)
-      if (element && pageWrapperRef.current) {
-        const elementRect = element.getBoundingClientRect()
-        const pageWrapperRect = pageWrapperRef.current.getBoundingClientRect()
-        targetPosition = elementRect.top - pageWrapperRect.top
-      }
-    }
-
-    if (isMobile || isTablet) {
-      // Use normal scroll for mobile/tablet
-      setTimeout(() => {
-        window.scrollTo({ top: targetPosition, behavior: immediate ? 'auto' : 'smooth' })
-      }, 200)
-    } else {
-      if (immediate) {
-        scrollPositionRef.current = targetPosition
-        targetScrollPositionRef.current = targetPosition
-        if (pageWrapperRef.current) {
-          pageWrapperRef.current.style.transform = `translate3d(0, ${-targetPosition}px, 0)`
-        }
-      } else {
-        targetScrollPositionRef.current = targetPosition
-      }
-    }
-  }
 
   return (
     <>

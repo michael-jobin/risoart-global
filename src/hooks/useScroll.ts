@@ -1,107 +1,115 @@
-import { useEffect, useRef, useState } from 'react'
-import { isTablet, isMobile } from 'react-device-detect'
-import { lerp } from '../utils'
+import { useRef, useEffect, useCallback, useState } from 'react';
+import { lerp } from '../utils';
 
-const useScroll = (isHomePage: boolean, scrollBlock: boolean) => {
- const pageWrapperRef = useRef<HTMLDivElement>(null)
- const [maxScroll, setMaxScroll] = useState(0)
- const [scrollPosition, setScrollPosition] = useState(0)
- const [targetScrollPosition, setTargetScrollPosition] = useState(0)
+const useScroll = (isHomePage: boolean, isTablet: boolean, isMobile: boolean) => {
+ const pageWrapperRef = useRef<HTMLDivElement>(null);
+ const maxScrollRef = useRef(0);
+ const scrollPositionRef = useRef(0);
+ const targetScrollPositionRef = useRef(0);
+ const [scrollBlock, setScrollBlock] = useState(false);
 
- const refreshScroll = () => {
+ const refreshScroll = useCallback(() => {
   if (pageWrapperRef.current) {
-   const pageContainerHeight = window.innerHeight
-   const pageWrapperHeight = pageWrapperRef.current.scrollHeight
-   setMaxScroll(pageWrapperHeight - pageContainerHeight)
-  }
- }
-
- useEffect(() => {
-  window.scrollTo(0, 0)
- }, [])
-
- useEffect(() => {
-  if (!pageWrapperRef.current) return
-
-  const resizeObserver = new ResizeObserver(() => {
-   refreshScroll()
-  })
-
-  resizeObserver.observe(pageWrapperRef.current)
-
-  return () => {
-   if (pageWrapperRef.current) {
-    resizeObserver.unobserve(pageWrapperRef.current)
+   console.log('refreshScroll')
+   const pageContainerHeight = window.innerHeight;
+   const pageWrapperHeight = pageWrapperRef.current.scrollHeight;
+   maxScrollRef.current = pageWrapperHeight - pageContainerHeight;
+   if (scrollPositionRef.current > maxScrollRef.current && maxScrollRef.current > 0) {
+    targetScrollPositionRef.current = maxScrollRef.current;
    }
+   window.scrollTo(0, 0);
   }
- }, [])
-
- useEffect(() => {
-  if (isHomePage || isTablet || isMobile) return
-  let requestId: number
-
-  const handleWheel = (event: WheelEvent) => {
-   if (scrollBlock) return
-   event.preventDefault()
-   setTargetScrollPosition((prev) => Math.max(0, Math.min(prev + event.deltaY, maxScroll)))
-  }
-
-  const animateScroll = () => {
-   setScrollPosition((prev) => {
-    const newScrollPosition = lerp(prev, targetScrollPosition, 0.1)
-    if (pageWrapperRef.current) {
-     pageWrapperRef.current.style.transform = `translate3d(0, ${-newScrollPosition}px, 0)`
-    }
-    return newScrollPosition
-   })
-   requestId = requestAnimationFrame(animateScroll)
-  }
-
-  window.addEventListener('wheel', handleWheel, { passive: false })
-  animateScroll()
-
-  return () => {
-   window.removeEventListener('wheel', handleWheel)
-   cancelAnimationFrame(requestId)
-  }
- }, [maxScroll, isHomePage, targetScrollPosition])
-
- useEffect(() => {
-  if (pageWrapperRef.current) {
-   pageWrapperRef.current.style.transform = `translate3d(0, ${-scrollPosition}px, 0)`
-  }
- }, [scrollPosition])
+ }, []);
 
  const scrollTo = (target: number | string, options: { immediate?: boolean } = {}) => {
-  const { immediate = false } = options
+  const { immediate = false } = options;
 
-  let targetPosition = 0
+  let targetPosition = 0;
   if (typeof target === 'number') {
-   targetPosition = target
+   targetPosition = target;
   } else if (typeof target === 'string') {
-   const element = document.querySelector(target)
+   const element = document.querySelector(target);
    if (element && pageWrapperRef.current) {
-    const elementRect = element.getBoundingClientRect()
-    const pageWrapperRect = pageWrapperRef.current.getBoundingClientRect()
-    targetPosition = elementRect.top - pageWrapperRect.top
+    const elementRect = element.getBoundingClientRect();
+    const pageWrapperRect = pageWrapperRef.current.getBoundingClientRect();
+    targetPosition = elementRect.top - pageWrapperRect.top;
    }
   }
 
   if (isMobile || isTablet) {
    setTimeout(() => {
-    window.scrollTo({ top: targetPosition, behavior: immediate ? 'auto' : 'smooth' })
-   }, 200)
+    window.scrollTo({ top: targetPosition, behavior: immediate ? 'auto' : 'smooth' });
+   }, 200);
   } else {
    if (immediate) {
-    setScrollPosition(targetPosition)
-    setTargetScrollPosition(targetPosition)
+    scrollPositionRef.current = targetPosition;
+    targetScrollPositionRef.current = targetPosition;
+    if (pageWrapperRef.current) {
+     pageWrapperRef.current.style.transform = `translate3d(0, ${-targetPosition}px, 0)`;
+    }
    } else {
-    setTargetScrollPosition(targetPosition)
+    targetScrollPositionRef.current = targetPosition;
    }
   }
- }
+ };
 
- return { pageWrapperRef, scrollTo, refreshScroll }
-}
+ useEffect(() => {
+  if (!pageWrapperRef.current) return;
 
-export default useScroll
+  const resizeObserver = new ResizeObserver(() => {
+   refreshScroll();
+  });
+
+  resizeObserver.observe(pageWrapperRef.current);
+
+  return () => {
+   if (pageWrapperRef.current) {
+    resizeObserver.unobserve(pageWrapperRef.current);
+   }
+  };
+ }, [refreshScroll]);
+
+ useEffect(() => {
+  if (isHomePage || isTablet || isMobile) return;
+  let requestId: number;
+
+  const handleWheel = (event: WheelEvent) => {
+   console.log(event.deltaY)
+   if (scrollBlock) return;
+   event.preventDefault();
+   targetScrollPositionRef.current = Math.max(
+    0,
+    Math.min(targetScrollPositionRef.current + event.deltaY, maxScrollRef.current)
+   );
+  };
+
+  const animateScroll = () => {
+   scrollPositionRef.current = lerp(
+    scrollPositionRef.current,
+    targetScrollPositionRef.current,
+    0.1
+   );
+   if (pageWrapperRef.current) {
+    pageWrapperRef.current.style.transform = `translate3d(0, ${-scrollPositionRef.current}px, 0)`;
+   }
+   requestId = requestAnimationFrame(animateScroll);
+  };
+
+  window.addEventListener('wheel', handleWheel, { passive: false });
+  animateScroll();
+
+  return () => {
+   window.removeEventListener('wheel', handleWheel);
+   cancelAnimationFrame(requestId);
+  };
+ }, [isHomePage, isTablet, isMobile, scrollBlock]);
+
+ return {
+  pageWrapperRef,
+  refreshScroll,
+  scrollTo,
+  setScrollBlock,
+ };
+};
+
+export default useScroll;

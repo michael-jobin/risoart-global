@@ -1,13 +1,17 @@
 import OndoSns from '../components/OndoSns'
 import GalleryWrapper from '../components/GalleryWrapper'
 import Footer from '../sections/Footer'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import useFetch from '../hooks/useFetch'
 import type { AboutData } from '../types'
 
 const About = () => {
   const [mapInteraction, setMapInteraction] = useState(false)
-
+  useEffect(() => {
+    if (!mapInteraction) {
+      window.scrollTo(0, 0)
+    }
+  }, [mapInteraction])
   // -----------------------
   // fetch
   // -----------------------
