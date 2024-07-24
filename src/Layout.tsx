@@ -10,6 +10,7 @@ import gsap from 'gsap'
 import Menu from './components/Menu'
 import { lerp } from './utils'
 import type { ArtList } from './types'
+import useFetch from './hooks/useFetch'
 
 const Layout = () => {
   const location = useLocation()
@@ -26,31 +27,12 @@ const Layout = () => {
   // -----------------------
   // fetch list
   // -----------------------
-  const [artList, setArtList] = useState<ArtList[]>([])
-  const [listLoaded, setListLoaded] = useState<boolean>(false)
-  const [error, setError] = useState<{ msg: string; state: boolean }>({
-    msg: '',
-    state: false,
-  })
-
-  useEffect(() => {
-    fetch('https://risoart.onten.jp/wp/wp-json/acf/v3/art/')
-      .then((response) => {
-        if (!response.ok) throw new Error(`${response.status} Error, something went wrong`)
-        return response.json()
-      })
-      .then((data) => {
-        setArtList(data)
-        setListLoaded(true)
-      })
-      .catch((err) => {
-        setError({
-          msg: err.message,
-          state: true,
-        })
-        setListLoaded(true)
-      })
-  }, [])
+  const {
+    data: artList,
+    loading: listLoading,
+    error,
+  } = useFetch<ArtList[]>('https://risoart.onten.jp/wp/wp-json/acf/v3/art/')
+  const listLoaded = !listLoading
 
   // -----------------------
   // page transition
@@ -207,7 +189,7 @@ const Layout = () => {
         <div className="canvasContainer" style={{ zIndex: 5 }}>
           <Canvas>
             <Suspense fallback={<Loader setLoaded={setLoaded} />}>
-              <Carousel loaded={loaded} page={location.pathname} artList={artList} />
+              <Carousel loaded={loaded} page={location.pathname} artList={artList || []} />
             </Suspense>
           </Canvas>
           {error.state && <p>{error.msg} </p>}

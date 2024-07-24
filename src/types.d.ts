@@ -25,6 +25,25 @@ export interface ArtList {
  };
 }
 
+export interface AboutData {
+ introduction_title: string
+ introduction_english: string
+ introduction_japanese: string
+ introduction_image: string
+ details_title: string
+ details_english: string
+ details_japanese: string
+ about_title: string
+ about_english: string
+ about_japanese: string
+ onten_title: string
+ onten_english: string
+ onten_japanese: string
+ onten_image_01: string
+ onten_image_02: string
+ ondo_works_lenght: number
+}
+
 export interface CarouselProps {
  loaded: boolean
  page: string

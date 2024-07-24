@@ -267,12 +267,8 @@ const Carousel: React.FC<CarouselProps> = ({
         item.position.y = lerp(item.position.y, 0, activeProgress.current)
         item.position.z = lerp(item.position.z, 0, activeProgress.current)
       }
-
-      // prevent collision between planes
-      if (i === activePlane && item.position.x <= 0) {
+      if (i === activePlane) {
         item.position.z += 0.6
-      } else if (i === activePlane && item.position.x > 0) {
-        item.position.z -= 0.6
       }
     })
   })

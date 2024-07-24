@@ -1,7 +1,9 @@
 import OndoSns from '../components/OndoSns'
 import GalleryWrapper from '../components/GalleryWrapper'
 import Footer from '../sections/Footer'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import useFetch from '../hooks/useFetch'
+import type { AboutData } from '../types'
 
 const About = () => {
   const [mapInteraction, setMapInteraction] = useState(false)
@@ -10,87 +12,48 @@ const About = () => {
   // fetch
   // -----------------------
 
-  interface Data {
-    introduction_title: string
-    introduction_english: string
-    introduction_japanese: string
-    introduction_image: string
-    details_title: string
-    details_english: string
-    details_japanese: string
-    about_title: string
-    about_english: string
-    about_japanese: string
-    onten_title: string
-    onten_english: string
-    onten_japanese: string
-    onten_image_01: string
-    onten_image_02: string
-    ondo_works_lenght: number
-  }
-
-  const [data, setData] = useState<Data>()
-  const [_dataLoaded, setDataLoaded] = useState<boolean>(false)
-  const [_error, setError] = useState<{ msg: string; state: boolean }>({
-    msg: '',
-    state: false,
-  })
-
-  useEffect(() => {
-    fetch('https://risoart.onten.jp/wp/?rest_route=/wp/v2/pages/83/')
-      .then((response) => {
-        if (!response.ok) throw new Error(`${response.status} Error, something went wrong`)
-        return response.json()
-      })
-      .then((data) => {
-        setData(data.acf)
-        setDataLoaded(true)
-      })
-      .catch((err) => {
-        setError({
-          msg: err.message,
-          state: true,
-        })
-        setDataLoaded(true)
-      })
-  }, [])
+  const { data } = useFetch<{ acf: AboutData }>(
+    'https://risoart.onten.jp/wp/?rest_route=/wp/v2/pages/83/'
+  )
 
   return (
     <div className="page-about basic__page whiteBackground">
       <section className="about__introduction" id="introduction">
         <div className="basic__container">
-          {data?.introduction_title && <h1 className="basic__title">{data.introduction_title}</h1>}
+          {data?.acf.introduction_title && (
+            <h1 className="basic__title">{data.acf.introduction_title}</h1>
+          )}
           <div className="basic__grid">
             <div>
-              {data?.introduction_english && (
-                <p className="basic__text pre-line">{data.introduction_english}</p>
+              {data?.acf.introduction_english && (
+                <p className="basic__text pre-line">{data.acf.introduction_english}</p>
               )}
             </div>
             <div>
-              {data?.introduction_japanese && (
-                <p className="basic__jatext pre-line">{data.introduction_japanese}</p>
+              {data?.acf.introduction_japanese && (
+                <p className="basic__jatext pre-line">{data.acf.introduction_japanese}</p>
               )}
             </div>
           </div>
         </div>
-        {data?.introduction_image && (
+        {data?.acf.introduction_image && (
           <div className="basic__fullImage">
-            <img src={data.introduction_image} alt="about" width="3602" height="1252" />
+            <img src={data.acf.introduction_image} alt="about" width="3602" height="1252" />
           </div>
         )}
       </section>
       <section className="about__details" id="details">
         <div className="basic__container">
-          {data?.details_title && <h2 className="basic__title">{data.details_title}</h2>}
+          {data?.acf.details_title && <h2 className="basic__title">{data.acf.details_title}</h2>}
           <div className="basic__grid">
             <div>
-              {data?.details_english && (
-                <p className="basic__text pre-line">{data.details_english}</p>
+              {data?.acf.details_english && (
+                <p className="basic__text pre-line">{data.acf.details_english}</p>
               )}
             </div>
             <div>
-              {data?.details_japanese && (
-                <p className="basic__jatext pre-line">{data.details_japanese}</p>
+              {data?.acf.details_japanese && (
+                <p className="basic__jatext pre-line">{data.acf.details_japanese}</p>
               )}
             </div>
           </div>
@@ -113,7 +76,7 @@ const About = () => {
       </section>
       <section className="about__about" id="about">
         <div className="basic__container">
-          {data?.about_title && <h2 className="basic__title">{data.about_title}</h2>}
+          {data?.acf.about_title && <h2 className="basic__title">{data.acf.about_title}</h2>}
           <div className="about__branding">
             <p>Branding by</p>
             <img
@@ -125,13 +88,13 @@ const About = () => {
           </div>
           <div className="basic__grid">
             <div>
-              {data?.about_english && (
-                <p className="basic__mediumtext pre-line">{data.about_english}</p>
+              {data?.acf.about_english && (
+                <p className="basic__mediumtext pre-line">{data.acf.about_english}</p>
               )}
             </div>
             <div>
-              {data?.about_japanese && (
-                <p className="basic__jatext pre-line">{data.about_japanese}</p>
+              {data?.acf.about_japanese && (
+                <p className="basic__jatext pre-line">{data.acf.about_japanese}</p>
               )}
             </div>
           </div>
@@ -145,8 +108,8 @@ const About = () => {
         </div>
       </section>
       <section className="about__gallery">
-        <GalleryWrapper index={0} itemsLength={data?.ondo_works_lenght || 0} />
-        <GalleryWrapper index={1} itemsLength={data?.ondo_works_lenght || 0} />
+        <GalleryWrapper index={0} itemsLength={data?.acf.ondo_works_lenght || 0} />
+        <GalleryWrapper index={1} itemsLength={data?.acf.ondo_works_lenght || 0} />
       </section>
       <section className="about__onten">
         <div className="basic__container">
@@ -160,26 +123,26 @@ const About = () => {
           </div>
           <div className="basic__grid">
             <div>
-              {data?.onten_english && (
-                <p className="basic__mediumtext pre-line">{data.onten_english}</p>
+              {data?.acf.onten_english && (
+                <p className="basic__mediumtext pre-line">{data.acf.onten_english}</p>
               )}
             </div>
             <div>
-              {data?.onten_japanese && (
-                <p className="basic__jatext pre-line">{data.onten_japanese}</p>
+              {data?.acf.onten_japanese && (
+                <p className="basic__jatext pre-line">{data.acf.onten_japanese}</p>
               )}
             </div>
           </div>
         </div>
         <div className="about__onten__gallery">
-          {data?.onten_image_01 && (
+          {data?.acf.onten_image_01 && (
             <picture>
-              <img src={data.onten_image_01} alt="onten kuramae" width="2652" height="1001" />
+              <img src={data.acf.onten_image_01} alt="onten kuramae" width="2652" height="1001" />
             </picture>
           )}
-          {data?.onten_image_02 && (
+          {data?.acf.onten_image_02 && (
             <picture>
-              <img src={data.onten_image_02} alt="onten kuramae" width="1206" height="1001" />
+              <img src={data.acf.onten_image_02} alt="onten kuramae" width="1206" height="1001" />
             </picture>
           )}
         </div>

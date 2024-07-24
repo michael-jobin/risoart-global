@@ -67,7 +67,7 @@ PlaneProps) => {
           y: 0,
         },
         {
-          y: 1.2,
+          y: 1.5,
           duration: active ? 1 : 0.1,
           delay: active ? 1.5 : 0,
           ease: 'power2.out',
