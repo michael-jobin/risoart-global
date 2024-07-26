@@ -11,19 +11,20 @@ import Menu from './components/Menu'
 import type { ArtList } from './types'
 import useFetch from './hooks/useFetch'
 import useScroll from './hooks/useScroll'
+import Footer from './sections/Footer'
 
 const Layout = () => {
-  console.log('Layout')
   const location = useLocation()
   const [loaded, setLoaded] = useState<boolean>(false)
   const isHomePage = location.pathname === '/'
   const overlayRef = useRef<HTMLDivElement>(null)
 
-  const { pageWrapperRef, refreshScroll, scrollTo, setScrollBlock } = useScroll(
-    isHomePage,
-    isTablet,
-    isMobile
-  )
+  const {
+    pageWrapperRef,
+    scrollTo,
+    // refreshScroll,
+    // setScrollBlock
+  } = useScroll(isHomePage, isTablet, isMobile)
 
   const {
     data: artList,
@@ -76,13 +77,14 @@ const Layout = () => {
       {!isMobile && !isTablet && <Cursor />}
       <Menu />
       <div className="overlay" ref={overlayRef}></div>
-      {isHomePage && <Header />}
       <div
-        className={`pageContainer ${isMobile && 'mobile'} ${isTablet && 'tablet'}`}
-        style={{ zIndex: location.pathname === '/' ? '0' : '10' }}
+        className={`pageContainer ${isMobile ? 'mobile' : ''} ${isTablet ? 'tablet' : ''}${
+          isHomePage ? 'homePage' : ''
+        }`}
+        style={{ pointerEvents: isHomePage ? 'none' : 'auto' }}
       >
         <div className="pageWrapper" ref={pageWrapperRef}>
-          {!isHomePage && <Header />}
+          <Header />
           {listLoaded && (loaded || isHomePage) && <Outlet context={artList} />}
         </div>
       </div>
@@ -94,6 +96,11 @@ const Layout = () => {
             </Suspense>
           </Canvas>
           {error.state && <p>{error.msg} </p>}
+        </div>
+      )}
+      {listLoaded && isHomePage && (
+        <div className="homeFooterContainer">
+          <Footer />
         </div>
       )}
     </>

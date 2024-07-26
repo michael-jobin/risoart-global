@@ -7,3 +7,20 @@
     opacity: 1;
   }
 }
+
+@keyframes footer {
+  0% {
+    transform: scaleX(var(--progress)) translateY(0);
+  }
+  100% {
+    transform: scaleX(var(--progress)) translateY(calc(50 * var(--vh) - 26rem));
+  }
+}
+@keyframes footerSP {
+  0% {
+    transform: scaleX(var(--progress)) translateY(0);
+  }
+  100% {
+    transform: scaleX(var(--progress)) translateY(calc(50 * var(--vh) - 15.5rem));
+  }
+}

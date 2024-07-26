@@ -7,7 +7,7 @@ const ArtListItem = ({ art }: { art: ArtList }) => {
   return (
     <article className="artList__item">
       <Link to={`/art-list/${art.acf.slug}`}>
-        <picture>
+        <picture className="artList__item__picture cover">
           <img src={art.acf.profilePhoto} alt={art.acf.name} width="841" height="601" />
         </picture>
       </Link>

@@ -5,8 +5,25 @@
   overflow: hidden;
   // z-index: 0;
   //padding-top: 71.2rem;
-  padding-top: 60vh;
+  // padding-top: 60vh;
+  pointer-events: none;
   @include sp {
-    padding-top: 60vh;
+    // padding-top: 60vh;
+  }
+}
+.home__link {
+  display: block;
+  position: absolute;
+  right: 3.5rem;
+  bottom: 1.5rem;
+  width: 41.4rem;
+  height: 6rem;
+  pointer-events: auto;
+  @include sp {
+    width: 17.6rem;
+    height: 2.2rem;
+    right: 50%;
+    transform: translateX(50%);
+    bottom: 0.5rem;
   }
 }

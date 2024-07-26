@@ -15,7 +15,6 @@ const Carousel: React.FC<CarouselProps> = ({
 }) => {
   const { camera, viewport } = useThree()
   // refs vars
-  // const groupRef = useRef<Group | null>(null)
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' })
   const [wrapper, setWrapper] = useState<Group | null>(null)
   const items = useMemo<Object3D[] | undefined>(() => {
@@ -46,8 +45,8 @@ const Carousel: React.FC<CarouselProps> = ({
 
   // others init
   const [params, _setParams] = useState({
-    width: 2.1,
-    height: 2.48,
+    width: isMobile ? 1.5 : 2.1,
+    height: isMobile ? 2 : 2.48,
     gap: 0,
   })
   const filteredArtlist = artList.filter(
@@ -55,7 +54,6 @@ const Carousel: React.FC<CarouselProps> = ({
   )
   const shuffledArtList = shuffleArray([...filteredArtlist])
   const [randomArtList, _setRandomArtList] = useState(shuffledArtList)
-  // setRandomArtList(shuffledArtList)
   const starting = useRef(0)
 
   // -----------------------
@@ -67,8 +65,6 @@ const Carousel: React.FC<CarouselProps> = ({
         // come back to home page
         gsap.set(activeProgress, {
           current: 0,
-          // duration: 1,
-          // ease: 'expo.inOut',
           onComplete: () => {
             setActivePlane(null)
             setAnyPlaneActive(false)
@@ -79,11 +75,13 @@ const Carousel: React.FC<CarouselProps> = ({
         // first time in home page
         setActivePlane(null)
         setAnyPlaneActive(false)
-        // const shuffledArtList = shuffleArray([...filteredArtlist])
-        // setRandomArtList(shuffledArtList)
         const tl = gsap.timeline()
         if (wrapper) {
-          tl.set(starting, { current: 0.0001 })
+          tl.add(() => {
+            document.body.classList.add('started-from-home')
+          })
+            .set(starting, { current: 0.00005 })
+            .set(wrapper.position, { y: isMobile ? 1 : 0 })
             .fromTo(
               wrapper.scale,
               {
@@ -92,9 +90,9 @@ const Carousel: React.FC<CarouselProps> = ({
                 z: 0,
               },
               {
-                y: 1.4,
-                x: 1.4,
-                z: 1.4,
+                y: isMobile ? 1.2 : 1.5,
+                x: isMobile ? 1.2 : 1.5,
+                z: isMobile ? 1.2 : 1.5,
                 duration: 3,
                 delay: 0.1,
                 ease: 'expo.inOut',
@@ -128,7 +126,7 @@ const Carousel: React.FC<CarouselProps> = ({
             .fromTo(
               scrollRef,
               {
-                current: -50,
+                current: -60,
               },
               {
                 current: 0,
@@ -136,6 +134,7 @@ const Carousel: React.FC<CarouselProps> = ({
                 ease: 'linear',
               }
             )
+            .to(wrapper.position, { y: 0, duration: 3, ease: 'expo.out' }, '-=3')
             .to(
               wrapper.scale,
               {
@@ -159,9 +158,6 @@ const Carousel: React.FC<CarouselProps> = ({
             .add(() => {
               setBlockEvents(false)
             }, '-=2')
-            .add(() => {
-              document.body.classList.add('started')
-            }, '+=2')
         }
       }
     } else {
@@ -170,6 +166,7 @@ const Carousel: React.FC<CarouselProps> = ({
       // } else {
       //   // come to art page after viewed the home page
       // }
+      document.body.classList.add('started')
       const match = page.match(/^\/art-list\/([^\/]+)\/?$/)
       if (match) {
         const slug = match[1]
@@ -182,6 +179,7 @@ const Carousel: React.FC<CarouselProps> = ({
         setActivePlane(null)
         setAnyPlaneActive(false)
         activeProgress.current = 0
+        console.log('other pages')
       }
     }
   }, [wrapper, page])
@@ -250,17 +248,17 @@ const Carousel: React.FC<CarouselProps> = ({
 
       item.position.z =
         Math.sign(item.position.x) * (3 - Math.pow(1 - normalizedDistance, exponent) * 3) +
-        (isMobile ? 0.4 : 0.9)
+        (isMobile ? 1.2 : 0.9)
 
       // ajusting positions
       const zOffsetFactor = 0.5 * starting.current
-      const yOffsetFactor = -0.425 * starting.current
+      const yOffsetFactor = isMobile ? -0.54 : -0.445 * starting.current
       item.position.x -=
         item.position.z * zOffsetFactor + 0.5 * starting.current - 0.7 * starting.current
       item.position.y =
         item.position.z * yOffsetFactor +
         0.5 * starting.current +
-        (isMobile ? 0.8 : 0.4) * starting.current
+        (isMobile ? 1.3 : 0.5) * starting.current
 
       if (anyPlaneActive) {
         item.position.x = lerp(item.position.x, 0, activeProgress.current)
@@ -295,7 +293,7 @@ const Carousel: React.FC<CarouselProps> = ({
     const x = e.clientX
     const mouseProgress = (x - startX.current) * speedDrag
     targetProgress.current = targetProgress.current + mouseProgress
-    scrollRef.current += mouseProgress * 50
+    scrollRef.current += mouseProgress * 100
     startX.current = x
   }
 

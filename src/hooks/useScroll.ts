@@ -10,7 +10,6 @@ const useScroll = (isHomePage: boolean, isTablet: boolean, isMobile: boolean) =>
 
  const refreshScroll = useCallback(() => {
   if (pageWrapperRef.current) {
-   console.log('refreshScroll')
    const pageContainerHeight = window.innerHeight;
    const pageWrapperHeight = pageWrapperRef.current.scrollHeight;
    maxScrollRef.current = pageWrapperHeight - pageContainerHeight;
@@ -74,7 +73,6 @@ const useScroll = (isHomePage: boolean, isTablet: boolean, isMobile: boolean) =>
   let requestId: number;
 
   const handleWheel = (event: WheelEvent) => {
-   console.log(event.deltaY)
    if (scrollBlock) return;
    event.preventDefault();
    targetScrollPositionRef.current = Math.max(

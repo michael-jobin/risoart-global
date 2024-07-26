@@ -66,6 +66,9 @@
     left: 0;
     width: 100%;
     height: calc(100 * var(--vh));
+    @include sp {
+      height: 100lvh;
+    }
     &__mask {
       content: '';
       position: absolute;
@@ -139,7 +142,7 @@
 .artDetails__profile {
   margin: 14.4rem 0 0;
   @include sp {
-    margin: 0;
+    margin: 7rem 0 0;
   }
   &__card {
     width: 32rem;

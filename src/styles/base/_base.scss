@@ -38,8 +38,6 @@ body {
   background-color: $yellow;
   display: none;
   z-index: 50;
-  // transform: translateX(-100%);
-  //opacity: 0;
 }
 
 .canvasContainer {
@@ -55,20 +53,8 @@ body {
 .pageContainer {
   position: relative;
   z-index: 10;
-  // @include pc {
-  //   width: 100%;
-  //   overflow: hidden;
-  //   height: calc(100 * var(--vh));
-  // }
 }
 // .pageWrapper {
-//   @include pc {
-//     position: absolute;
-//     top: 0;
-//     left: 0;
-//     width: 100%;
-//     will-change: transform;
-//   }
 // }
 
 a {

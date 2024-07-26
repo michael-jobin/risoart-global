@@ -20,6 +20,12 @@
       }
     }
   }
+  &__item__picture {
+    height: 21.9rem;
+    @include sp {
+      height: 24.7rem;
+    }
+  }
   &__item__info {
     display: flex;
     justify-content: space-between;

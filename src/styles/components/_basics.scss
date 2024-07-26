@@ -32,6 +32,11 @@
     &__full {
       grid-column: span 2;
     }
+    &__half {
+      @include sp {
+        grid-column: span 2;
+      }
+    }
   }
   &__text {
     font-size: 1.7rem;

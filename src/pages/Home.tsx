@@ -1,9 +1,12 @@
-import Footer from '../sections/Footer'
-
 const Home = () => {
   return (
     <div className="page-home">
-      <Footer />
+      <a
+        href="https://www.ondo-inc.jp/"
+        className="home__link"
+        target="_blank"
+        aria-label="branding by ondo.inc"
+      ></a>
     </div>
   )
 }

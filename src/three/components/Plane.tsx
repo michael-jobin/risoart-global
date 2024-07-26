@@ -53,7 +53,7 @@ PlaneProps) => {
         duration: 0.3,
       })
     }
-  }, [ref, opacity, active, viewport, width, height])
+  }, [ref, opacity, active, width, height])
 
   useGSAP(() => {
     const material = ref.current?.material as ShaderMaterial | undefined
